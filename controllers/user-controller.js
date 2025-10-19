@@ -18,3 +18,14 @@ exports.insertAndSendOtp = async (req,res) => {
 
     }
 }
+
+exports.verifyOtp = async (req,res) => {
+    try {
+        const {email, password, otp} = req.body;
+        await userOtpImpl.verifyOtp({email, password, otp});
+        return res.status(200).json(new ApiResponse.Success('User created successfully.'));
+
+    } catch (error) {
+        return res.status(400).json(new ApiResponse.Error([error.message], 400));
+    }
+}
