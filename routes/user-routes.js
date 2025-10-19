@@ -18,7 +18,7 @@ const userController = require('../controllers/user-controller')
  *               properties:
  *                 email:
  *                   type: string
- *                   example: "user@example.com"
+ *                   example: "aunikislam172@gmail.com"
  *                 password:
  *                   type: string
  *                   example: "myStrongPassword123"
