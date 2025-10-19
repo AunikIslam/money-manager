@@ -6,7 +6,43 @@
     </root>
     <schema id="2" parent="1" name="admin"/>
     <schema id="3" parent="1" name="local"/>
-    <schema id="4" parent="1" name="sample_mflix"/>
-    <schema id="5" parent="1" name="shop"/>
+    <schema id="4" parent="1" name="money_manager">
+      <LastIntrospectionLocalTimestamp>2025-10-19.05:36:34</LastIntrospectionLocalTimestamp>
+    </schema>
+    <schema id="5" parent="1" name="sample_mflix"/>
+    <schema id="6" parent="1" name="shop"/>
+    <table id="7" parent="4" name="otps"/>
+    <table id="8" parent="4" name="users"/>
+    <column id="9" parent="7" name="_id">
+      <Position>1</Position>
+      <StoredType>ObjectId|12s</StoredType>
+    </column>
+    <column id="10" parent="7" name="__v">
+      <Position>2</Position>
+      <StoredType>Int32|4s</StoredType>
+    </column>
+    <column id="11" parent="7" name="email">
+      <Position>3</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="12" parent="7" name="expiresAt">
+      <Position>4</Position>
+      <StoredType>ISODate|91s</StoredType>
+    </column>
+    <column id="13" parent="7" name="otp">
+      <Position>5</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <index id="14" parent="7" name="_id_">
+      <ColNames>_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="15" parent="7" name="email_1">
+      <ColNames>email</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="16" parent="7" name="expiresAt_1">
+      <ColNames>expiresAt</ColNames>
+    </index>
   </database-model>
 </dataSource>
