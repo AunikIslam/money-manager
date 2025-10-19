@@ -1,15 +1,9 @@
 const utilFunctions = require('../utils/util-functions')
 exports.Success = class Success {
     constructor(content = null, page = {}, statusCode = 200, statusMessage = 'Successful') {
-        if (typeof content === 'string') {
-            this.data = {
-                id: content
-            }
-        } else {
-            this.data = {
-                content,
-            };
-        }
+        this.data = {
+            content
+        };
         this.page = page;
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
