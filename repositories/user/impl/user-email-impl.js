@@ -6,11 +6,6 @@ class UserEmailImpl {
     static async sendSignUpOtpEmail(email, otp) {
         const transporter = this.createTransporter();
         try {
-            const lowerCaseEmail = email.toLowerCase();
-            const duplicateUser = await User.findOne({email: lowerCaseEmail});
-            if (duplicateUser) {
-                throw new apiResponse.LocalMessage(null, 400, 'Email already exists');
-            }
             await transporter.sendMail({
                 from: process.env.SENDER_MAIL,
                 to: email,
