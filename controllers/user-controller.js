@@ -1,7 +1,20 @@
 const userOtpImpl = require('../repositories/user/impl/user-otp-impl');
 const userEmailImpl = require('../repositories/user/impl/user-email-impl');
+const ApiResponse = require("../models/api-response");
+const User = require('../schemas/user');
+
+
 exports.insertAndSendOtp = async (req,res) => {
-    const response  = await userOtpImpl.insertOtp(req.body.email);
-    await userEmailImpl.sendSignUpOtpEmail(response.email, response.otp);
-    apiResponse
+    const duplicateUser = await User.findOne({email: req.body.email.toLowerCase()});
+    if (duplicateUser) {
+        return res.status(400).json(new ApiResponse.Error(['User already exists'], 400));
+    }
+    try {
+        const response  = await userOtpImpl.insertOtp(req.body.email);
+        await userEmailImpl.sendSignUpOtpEmail(response.email.toLowerCase(), response.otp);
+        return res.status(200).json(new ApiResponse.Success('An otp has been sent to your email address.'));
+    }
+    catch (err) {
+
+    }
 }
