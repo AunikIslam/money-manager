@@ -5,25 +5,32 @@ const Schema = mongoose.Schema;
 const otpSchema = new Schema({
     email: {
         type: String,
-        required: true
+        required: true,
+        index: true,
+        unique: true, // automatically creates an index
+        lowercase: true,
+        trim: true
     },
     otp: {
         type: String,
         required: true
     },
     expiresAt: {
-        type: Date
+        type: Date,
+        index: {
+            expires: 0
+        }
     }
 });
 
 otpSchema.statics.insertOtp = async function (email)  {
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
     const otp = generateOtp();
-    return await this.create({
-        email: email,
-        otp,
-        expiresAt
-    });
+    return await this.findOneAndUpdate(
+        { email }, // finds the document with this email
+        { otp, expiresAt }, //
+        { new: true, upsert: true }
+    );
 }
 
 module.exports = mongoose.model('Otp', otpSchema);
