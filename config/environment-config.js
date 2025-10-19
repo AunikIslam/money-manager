@@ -8,12 +8,8 @@ require('dotenv').config({
 
 module.exports = {
     port: process.env.PORT,
-    dbHost: process.env.DB_HOST,
-    dbPort: process.env.DB_PORT,
     dbName: process.env.DB_NAME,
-    dbPassword: process.env.DB_PASSWORD,
-    dbUser: process.env.DB_USER,
-    apiUrl: process.env.API_URL,
     nodeEnv: process.env.NODE_ENV,
-    externalApiUrl: process.env.EXTERNAL_API_URL
+    dbHost: process.env.DB_HOST,
+    mongodbURI: process.env.MONGODB_URI,
 };

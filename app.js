@@ -16,74 +16,12 @@ const setupSwagger = require('./config/swagger-config');
 const checkForWhiteListUrl = require('./utils/white-list-urls');
 const ApiResponse = require("./models/api-response");
 const browserPool = require('./config/browser-pool');
-
-(async () => {
-    await browserPool.launchBrowser();
-})();
-
+const userRoutes = require('./routes/user-routes');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
-app.use((req, res, next) => {
-    sessionContextService.initialize({}, () => {
-        next();
-    })
-});
-
-const isSwaggerRequest = async (req, res, next) => {
-    res.locals.skipAuth = checkForWhiteListUrl(req.originalUrl);
-    next();
-}
-
-const validateToken = async (req, res, next) => {
-    if (res.locals.skipAuth) {
-        next();
-    }
-    else {
-        try {
-            let token;
-            if (req.headers.authorization) {
-                token = req.headers.authorization;
-            } else {
-                token = `Bearer ${req.query.access_token}`;
-            }
-            sessionContextService.setToken(token);
-            const self = await baseService.validateToken(utilFunctions.prepareApiUrl(endpoints.validate_token, baseUrls.f_auth));
-            sessionContextService.setSelf(self);
-            next();
-        }
-        catch (error) {
-            console.log(`Error from token validate api: ${error.message}`);
-            return res.status(401).json(new ApiResponse.Error(['Failed to validate token'], 401));
-        }
-    }
-
-}
-
-const getPermissions = async (req, res, next) => {
-    if (res.locals.skipAuth) {
-        next();
-    } else {
-        try {
-            const permissions = await baseService.getPermissionSet(utilFunctions.prepareApiUrl(endpoints.self_authorities, baseUrls.f_base));
-            sessionContextService.setPermissions(permissions);
-            next();
-        } catch (error) {
-            console.log(`Error from permission set api: ${error.message}`);
-            return res.status(401);
-        }
-    }
-}
-
-app.use('/', isSwaggerRequest, validateToken, getPermissions);
-
-// app.use('/pdf-manager/templates', templateRoutes);
-app.use('/pdf-manager/pdf-export', pdfExportRoutes);
+app.use('/user', userRoutes)
 
 setupSwagger(app);
-
-// app.listen(environmentConfig.port, () => {
-//     console.log(`Server is running on port ${environmentConfig.port}`);
-// });
 
 module.exports = app;

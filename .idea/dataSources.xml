@@ -22,5 +22,12 @@
       <jdbc-url>jdbc:postgresql://db.dev.bizmotionapp.com:5551/everestdb</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="@cluster0.vbpgq1z.mongodb.net" uuid="4bbbabdf-f1ba-46c5-af80-9a1b0d52b021">
+      <driver-ref>mongo.4</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.dbschema.MongoJdbcDriver</jdbc-driver>
+      <jdbc-url>mongodb+srv://cluster0.vbpgq1z.mongodb.net/</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

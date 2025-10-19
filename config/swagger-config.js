@@ -11,7 +11,7 @@ const options = {
         },
         servers: [
             {
-                url: '{host_url}/pdf-manager',
+                url: '{host_url}',
                 description: 'The production API server',
                 variables: {
                     host_url: {
@@ -40,5 +40,5 @@ const options = {
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
-    app.use('/pdf-manager/pdf-export/swagger-ui/index.html', swaggerUi.serve, swaggerUi.setup(specs));
+    app.use('/swagger-ui/index.html', swaggerUi.serve, swaggerUi.setup(specs));
 };
