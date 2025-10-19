@@ -1,5 +1,5 @@
-const userOtpImpl = require('../repositories/user/impl/user-otp-impl');
-const userEmailImpl = require('../repositories/user/impl/user-email-impl');
+const userOtpImpl = require('../repositories/auth/impl/user-otp-impl');
+const userEmailImpl = require('../repositories/auth/impl/user-email-impl');
 const ApiResponse = require("../models/api-response");
 const User = require('../schemas/user');
 
@@ -27,5 +27,13 @@ exports.verifyOtp = async (req,res) => {
 
     } catch (error) {
         return res.status(400).json(new ApiResponse.Error([error.message], 400));
+    }
+}
+
+exports.login = async (req,res) => {
+    try {
+
+    } catch (error) {
+
     }
 }

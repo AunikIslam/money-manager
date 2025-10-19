@@ -22,6 +22,17 @@ class UserOtpImpl {
             }
         }
     }
+
+    static login = async (email, password) => {
+        const user = await User.findOne({email});
+        if (!user) {
+            throw new Error(`User does not exist`);
+        }
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            throw new Error(`Invalid email or password`);
+        }
+    }
 }
 
 module.exports = UserOtpImpl;

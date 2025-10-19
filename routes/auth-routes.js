@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/user-controller')
+const authController = require('../controllers/auth-controller')
 
 /**
  * @swagger
- * /user/auth/get-otp:
+ * /auth/get-otp:
  *   post:
  *     summary: Get OTP
  *     tags: [user-controller]
@@ -46,11 +46,11 @@ const userController = require('../controllers/user-controller')
  *                  schema:
  *                      $ref: "#/components/schemas/ErrorResponse500"
  */
-router.post('/auth/get-otp', userController.insertAndSendOtp);
+router.post('/get-otp', authController.insertAndSendOtp);
 
 /**
  * @swagger
- * /user/auth/verify-otp:
+ * /auth/verify-otp:
  *   post:
  *     summary: Verify user otp
  *     tags: [user-controller]
@@ -98,6 +98,6 @@ router.post('/auth/get-otp', userController.insertAndSendOtp);
  *                  schema:
  *                      $ref: "#/components/schemas/ErrorResponse500"
  */
-router.post('/auth/verify-otp', userController.verifyOtp);
+router.post('/verify-otp', authController.verifyOtp);
 
 module.exports = router;
