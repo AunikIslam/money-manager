@@ -1,3 +1,11 @@
+# Node
 node_modules/
 
-environments/.env
+# Environment files
+environments/
+
+# System files
+package-lock.json
+
+# IDE files
+.idea/
