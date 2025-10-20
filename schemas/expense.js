@@ -8,9 +8,8 @@ const expenseSchema = new Schema({
         required: true,
         index: true
     },
-    category_id: {
-        type: Schema.Types.ObjectId,
-        ref: 'Category',
+    category: {
+        type: String,
         required: true,
         index: true
     },
