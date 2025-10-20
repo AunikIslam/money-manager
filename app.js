@@ -20,6 +20,11 @@ const authMiddleware = require('./middlewares/auth-middleware');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
+app.use((req, res, next) => {
+    sessionContextService.initialize({}, () => {
+        next();
+    })
+});
 app.use('/auth', authRoutes);
 app.use('/other-routers', authMiddleware.verifyToken);
 

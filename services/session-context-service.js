@@ -30,8 +30,12 @@ class SessionContextService {
         return asyncLocalStorage.getStore().permissions;
     }
 
+    static setUserId(userId) {
+        asyncLocalStorage.getStore().userId = userId;
+    }
+
     static getUserId() {
-        return asyncLocalStorage.getStore().self.userId;
+        return asyncLocalStorage.getStore().userId;
     }
 }
 

@@ -11,8 +11,8 @@ exports.verifyToken = (req, res, next) => {
         return res.status(401).json(new ApiResponse.Error(['Token not available'], 401));
     }
     try {
-        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
-        next()
+        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+        next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
             return res.status(401).json(new ApiResponse.Error(['Token expired'], 401));
