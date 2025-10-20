@@ -1,6 +1,7 @@
 const Otp = require('../../../schemas/otp');
 const User = require('../../../schemas/user');
 const bcrypt = require('bcrypt');
+const {generateAccessToken, generateRefreshToken} = require("../../../utils/jwt");
 
 class UserOtpImpl {
     static async insertOtp(email) {
@@ -17,9 +18,18 @@ class UserOtpImpl {
                     email: params.email,
                     password: await bcrypt.hash(params.password, 10)
                 });
+                return this.createToken(params.email);
             } else {
                 throw new Error(`Wrong otp`);
             }
+        }
+    }
+
+    static createToken(email) {
+
+        return {
+            access_token: generateAccessToken({email}),
+            refresh_token: generateRefreshToken({email})
         }
     }
 
