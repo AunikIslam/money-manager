@@ -8,4 +8,5 @@ environments/
 package-lock.json
 
 # IDE files
-.idea/
+.idea
+.vercel
