@@ -31,7 +31,23 @@ const expenseSchema = new Schema({
     date: {
         type: Date,
         required: true
+    },
+    time: {
+        type: String,
+        required: true
     }
 });
+
+expenseSchema.statics.prepareExpense = function (params) {
+    return new this({
+        user_id: params.user_id,
+        category: params.category,
+        amount: params.amount,
+        account: params.account,
+        note: params.note,
+        date: params.date.split(' ')[0],
+        time: params.date.split(' ')[1]
+    });
+}
 
 module.exports = mongoose.model('Expense', expenseSchema);
