@@ -7,8 +7,8 @@ const authController = require('../controllers/auth-controller')
  * /auth/get-otp:
  *   post:
  *     summary: Get OTP
- *     tags: [user-controller]
- *     operationId: users
+ *     tags: [auth-controller]
+ *     operationId: get_otp
  *     requestBody:
  *         required: true
  *         content:
@@ -53,8 +53,8 @@ router.post('/get-otp', authController.insertAndSendOtp);
  * /auth/verify-otp:
  *   post:
  *     summary: Verify user otp
- *     tags: [user-controller]
- *     operationId: users
+ *     tags: [auth-controller]
+ *     operationId: verify_otp
  *     requestBody:
  *         required: true
  *         content:
@@ -99,5 +99,51 @@ router.post('/get-otp', authController.insertAndSendOtp);
  *                      $ref: "#/components/schemas/ErrorResponse500"
  */
 router.post('/verify-otp', authController.verifyOtp);
+
+/**
+ * @swagger
+ * /auth/get-token:
+ *   post:
+ *     summary: Get token
+ *     tags: [auth-controller]
+ *     operationId: get_token
+ *     requestBody:
+ *         required: true
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 email:
+ *                   type: string
+ *                   example: "aunikislam172@gmail.com"
+ *     responses:
+ *       200:
+ *         description: User created
+ *         content:
+ *             application/pdf:
+ *                  schema:
+ *                      type: string
+ *                      format: binary
+ *       400:
+ *         description: Bad Request
+ *         content:
+ *             application/json:
+ *                  schema:
+ *                      $ref: "#/components/schemas/ErrorResponse400"
+ *       401:
+ *         description: Unauthorized
+ *         content:
+ *             application/json:
+ *                  schema:
+ *                      $ref: "#/components/schemas/ErrorResponse401"
+ *       500:
+ *         description: Internal Server Error
+ *         content:
+ *             application/json:
+ *                  schema:
+ *                      $ref: "#/components/schemas/ErrorResponse500"
+ */
+router.post('/get-token', authController.getToken);
 
 module.exports = router;
