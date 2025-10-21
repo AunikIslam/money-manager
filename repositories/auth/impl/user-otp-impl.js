@@ -2,6 +2,7 @@ const Otp = require('../../../schemas/otp');
 const User = require('../../../schemas/user');
 const bcrypt = require('bcrypt');
 const {generateAccessToken, generateRefreshToken} = require("../../../utils/jwt");
+const UserTokenImpl = require('../impl/user-token-impl')
 
 class UserOtpImpl {
     static async insertOtp(email) {
@@ -14,22 +15,14 @@ class UserOtpImpl {
             throw new Error(`Otp already expired`);
         } else {
             if (params.otp === record.otp) {
-                await User.create({
+                const user = await User.create({
                     email: params.email,
                     password: await bcrypt.hash(params.password, 10)
                 });
-                return this.createToken(params.email);
+                return await UserTokenImpl.getToken(user.email);
             } else {
                 throw new Error(`Wrong otp`);
             }
-        }
-    }
-
-    static createToken(email) {
-
-        return {
-            access_token: generateAccessToken({email}),
-            refresh_token: generateRefreshToken({email})
         }
     }
 
