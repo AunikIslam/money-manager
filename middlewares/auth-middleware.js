@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
-const ApiResponse = require('../models/api-response')
+const ApiResponse = require('../models/api-response');
+const SessionContextService = require('../services/session-context-service');
 
 exports.verifyToken = (req, res, next) => {
     const header = req.headers.authorization;
@@ -11,7 +12,9 @@ exports.verifyToken = (req, res, next) => {
         return res.status(401).json(new ApiResponse.Error(['Token not available'], 401));
     }
     try {
-        const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+        jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
+        const decoded = jwt.decode(token);
+        SessionContextService.setUserId(decoded.id);
         next();
     } catch (error) {
         if (error.name === 'TokenExpiredError') {
