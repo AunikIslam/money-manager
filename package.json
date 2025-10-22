@@ -1,12 +1,12 @@
 {
   "name": "pdf-download-app",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "api/server.js",
   "scripts": {
     "test": "jest --runInBand",
     "migrate": "npx sequelize-cli db:migrate",
     "setup-playwright": "npx playwright install chromium",
-    "start-all": "nodemon server.js",
+    "start-all": "nodemon api/server.js",
     "start": "cross-env NODE_ENV=mongodb npm run start-all"
   },
   "jest": {
