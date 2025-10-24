@@ -1,5 +1,5 @@
-const app = require('../app');
-const environmentConfig = require('../config/environment-config');
+const app = require('./app');
+const environmentConfig = require('./config/environment-config');
 const mongoose = require("mongoose");
 
 mongoose.connect(environmentConfig.mongodbURI)
