@@ -1,0 +1,1 @@
+require('./excel-upload-worker');
