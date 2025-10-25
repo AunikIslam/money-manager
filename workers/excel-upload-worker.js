@@ -9,14 +9,28 @@ const connection = new IORedis({
 });
 
 const worker = new Worker(
-    'excel-processing',
+    'excel-processing', // queue name
     async job => {
-        const { filePath } = job.data;
+        const { filePath, userId } = job.data;
         const workBook = new ExcelJs.Workbook();
         await workBook.xlsx.readFile(filePath);
 
         const workSheet = workBook.worksheets[0];
-        console.log(workSheet);
+        const docs = [];
+        workSheet.eachRow((row, rowNumber) => {
+            if (rowNumber === 1) return; // skip header
+            docs.push({
+                user_id: userId,
+                category: row.getCell(1).value,
+                amount: row.getCell(2).value,
+                account: row.getCell(3).value,
+                note: row.getCell(4).value,
+                date: row.getCell(5).value,
+                time: row.getCell(6).value,
+                transaction_type: row.getCell(7).value
+            });
+        });
+
         fs.unlinkSync(filePath);
         console.log(`Processed and deleted: ${filePath}`);
     },
@@ -26,3 +40,4 @@ const worker = new Worker(
 )
 worker.on('completed', job => console.log(`Job ${job.id} completed`));
 worker.on('failed', (job, err) => console.error(`Job ${job.id} failed: ${err.message}`));
+worker.on('ready', () => {console.log(`Worker is running`)});
