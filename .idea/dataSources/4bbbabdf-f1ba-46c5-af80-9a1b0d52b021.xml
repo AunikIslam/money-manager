@@ -7,34 +7,83 @@
     <schema id="2" parent="1" name="admin"/>
     <schema id="3" parent="1" name="local"/>
     <schema id="4" parent="1" name="money_manager">
-      <LastIntrospectionLocalTimestamp>2025-10-21.08:13:14</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-10-25.02:56:48</LastIntrospectionLocalTimestamp>
     </schema>
     <schema id="5" parent="1" name="sample_mflix"/>
     <schema id="6" parent="1" name="shop"/>
     <table id="7" parent="4" name="expenses"/>
     <table id="8" parent="4" name="otps"/>
     <table id="9" parent="4" name="users"/>
-    <column id="10" parent="9" name="_id">
+    <column id="10" parent="7" name="_id">
       <Position>1</Position>
       <StoredType>ObjectId|12s</StoredType>
     </column>
-    <column id="11" parent="9" name="__v">
+    <column id="11" parent="7" name="account">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="12" parent="7" name="note">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="13" parent="7" name="time">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="14" parent="7" name="__v">
       <Position>2</Position>
       <StoredType>Int32|4s</StoredType>
     </column>
-    <column id="12" parent="9" name="email">
+    <column id="15" parent="7" name="amount">
+      <Position>2</Position>
+      <StoredType>Int32|4s</StoredType>
+    </column>
+    <column id="16" parent="7" name="user_id">
+      <Position>2</Position>
+      <StoredType>ObjectId|12s</StoredType>
+    </column>
+    <column id="17" parent="7" name="category">
       <Position>3</Position>
       <StoredType>String|12s</StoredType>
     </column>
-    <column id="13" parent="9" name="password">
+    <column id="18" parent="7" name="date">
       <Position>4</Position>
-      <StoredType>String|12s</StoredType>
+      <StoredType>ISODate|91s</StoredType>
     </column>
-    <index id="14" parent="9" name="_id_">
+    <index id="19" parent="7" name="_id_">
       <ColNames>_id</ColNames>
       <Unique>1</Unique>
     </index>
-    <index id="15" parent="9" name="email_1">
+    <index id="20" parent="7" name="account_1">
+      <ColNames>account</ColNames>
+    </index>
+    <index id="21" parent="7" name="user_id_1">
+      <ColNames>user_id</ColNames>
+    </index>
+    <index id="22" parent="7" name="category_1">
+      <ColNames>category</ColNames>
+    </index>
+    <column id="23" parent="9" name="_id">
+      <Position>1</Position>
+      <StoredType>ObjectId|12s</StoredType>
+    </column>
+    <column id="24" parent="9" name="__v">
+      <Position>1</Position>
+      <StoredType>Int32|4s</StoredType>
+    </column>
+    <column id="25" parent="9" name="email">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <column id="26" parent="9" name="password">
+      <Position>1</Position>
+      <StoredType>String|12s</StoredType>
+    </column>
+    <index id="27" parent="9" name="_id_">
+      <ColNames>_id</ColNames>
+      <Unique>1</Unique>
+    </index>
+    <index id="28" parent="9" name="email_1">
       <ColNames>email</ColNames>
       <Unique>1</Unique>
     </index>
