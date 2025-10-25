@@ -1,6 +1,7 @@
 const ExpenseUploadImpl = require('../repositories/upload/impl/expense-upload-impl');
 const ApiResponse = require('../models/api-response');
-const ExcelQueue = require('../queues/excel-queue')
+const ExcelQueue = require('../queues/excel-queue');
+const SessionContextService = require('../services/session-context-service');
 
 exports.uploadExpenseExcel = async function(req, res) {
     if (!req.file) {
@@ -8,9 +9,10 @@ exports.uploadExpenseExcel = async function(req, res) {
     }
     try {
         await ExcelQueue.excelQueue.add(
-            'parse-expense',
+            'parse-expense', // add job 'parse-expense' to the queue
             {
                 filePath: req.file.path,
+                userId: SessionContextService.getUserId()
             }
         )
         return res.status(200).send(new ApiResponse.Success(`File uploaded successfully.`));
