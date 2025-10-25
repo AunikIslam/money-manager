@@ -11,7 +11,8 @@ const expenseSchema = new Schema({
     category: {
         type: String,
         required: true,
-        index: true
+        index: true,
+        lowercase: true
     },
     amount: {
         type: Number,
@@ -20,7 +21,8 @@ const expenseSchema = new Schema({
     account: {
         type: String,
         required: true,
-        index: true
+        index: true,
+        lowercase: true
     },
     note: {
         type: String
@@ -29,12 +31,18 @@ const expenseSchema = new Schema({
         type: String
     },
     date: {
-        type: Date,
+        type: String,
         required: true
     },
     time: {
         type: String,
         required: true
+    },
+    transaction_type: {
+        type: String,
+        required: true,
+        index: true,
+        lowercase: true
     }
 });
 
