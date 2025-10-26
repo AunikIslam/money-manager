@@ -31,35 +31,44 @@ const expenseErrorEntrySchema = new Schema({
     }
 });
 
-expenseErrorEntrySchema.statics.setCategory = function(category) {
-    return this.category = category;
+expenseErrorEntrySchema.methods.setCategory = function(category) {
+    this.category = category;
+    return this;
 }
 
-expenseErrorEntrySchema.statics.setAmount = function(amount) {
-    return this.amount = amount;
+expenseErrorEntrySchema.methods.setAmount = function(amount) {
+    this.amount = amount;
+    return this;
 }
 
-expenseErrorEntrySchema.statics.setAccount = function(account) {
-    return this.account = account;
+expenseErrorEntrySchema.methods.setAccount = function(account) {
+    this.account = account;
+    return this
 }
 
-expenseErrorEntrySchema.statics.setNote = function(note) {
-    return this.note = note;
+expenseErrorEntrySchema.methods.setNote = function(note) {
+    this.note = note;
+    return this;
 }
-expenseErrorEntrySchema.statics.setDescription = function(description) {
-    return this.description = description;
+expenseErrorEntrySchema.methods.setDescription = function(description) {
+    this.description = description;
+    return this;
 }
-expenseErrorEntrySchema.statics.setDate = function(date) {
-    return this.date = date;
+expenseErrorEntrySchema.methods.setDate = function(date) {
+    this.date = date;
+    return this;
 }
-expenseErrorEntrySchema.statics.setTime = function(time) {
-    return this.time = time;
+expenseErrorEntrySchema.methods.setTime = function(time) {
+    this.time = time;
+    return this;
 }
-expenseErrorEntrySchema.statics.setTransactionType = function(type) {
-    return this.transactionType = type;
+expenseErrorEntrySchema.methods.setTransactionType = function(type) {
+    this.transactionType = type;
+    return this;
 }
-expenseErrorEntrySchema.statics.setError = function(error) {
-    return this.error = error;
+expenseErrorEntrySchema.methods.setError = function(error) {
+    this.error = error;
+    return this;
 }
 
 module.exports = mongoose.model('ExpenseErrorEntry', expenseErrorEntrySchema);
