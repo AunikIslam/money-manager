@@ -2,7 +2,10 @@ const {Worker} = require('bullmq');
 const IORedis = require('ioredis');
 const ExcelJs = require('exceljs');
 const Expense = require('../schemas/expense');
+const ExpenseErrorEntry = require('../schemas/expense-error-entry');
+const ExpenseUploadImpl = require('../repositories/upload/impl/expense-upload-impl')
 const fs = require('fs');
+const utilFunctions = require('../utils/util-functions')
 
 const connection = new IORedis({
     maxRetriesPerRequest: null
@@ -19,18 +22,20 @@ const worker = new Worker(
         const docs = [];
         workSheet.eachRow((row, rowNumber) => {
             if (rowNumber === 1) return; // skip header
+            console.log(`${rowNumber + 1}. Date: ${row.getCell(5).value}`);
+            console.log(`${rowNumber + 1}. Time: ${row.getCell(6).value}`);
             docs.push({
                 user_id: userId,
                 category: row.getCell(1).value,
                 amount: row.getCell(2).value,
                 account: row.getCell(3).value,
                 note: row.getCell(4).value,
-                date: row.getCell(5).value,
-                time: row.getCell(6).value,
+                date: utilFunctions.datePipe(row.getCell(5).value, 'hh:mm:ss'),
+                time: utilFunctions.datePipe(row.getCell(6).value, 'yyyy-mm-dd'),
                 transaction_type: row.getCell(7).value
             });
         });
-
+        ExpenseUploadImpl.prepareUploadData(docs);
         fs.unlinkSync(filePath);
         console.log(`Processed and deleted: ${filePath}`);
     },
