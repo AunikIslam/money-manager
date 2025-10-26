@@ -36,8 +36,17 @@ class ExpenseUploadImpl {
         return multer({storage, fileFilter});
     }
 
-    static performMulterUpload(req, res) {
+    static prepareUploadData(data) {
+        const validEntries = [];
+        const invalidEntries = [];
 
+        data.forEach(pData => {
+           if (!data.category) {
+               invalidEntries.push({
+
+               })
+           }
+        });
     }
 }
 
