@@ -7,7 +7,7 @@
     <schema id="2" parent="1" name="admin"/>
     <schema id="3" parent="1" name="local"/>
     <schema id="4" parent="1" name="money_manager">
-      <LastIntrospectionLocalTimestamp>2025-10-25.02:56:48</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-10-26.03:54:31</LastIntrospectionLocalTimestamp>
     </schema>
     <schema id="5" parent="1" name="sample_mflix"/>
     <schema id="6" parent="1" name="shop"/>
