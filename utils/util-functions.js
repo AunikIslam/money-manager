@@ -3,6 +3,9 @@ const constants = require('../utils/constants');
 const {format} = require('date-fns');
 
 exports.datePipe = (date, dateFormate) => {
+    if (date == null) {
+        return null;
+    }
     return format(date, dateFormate);
 }
 
