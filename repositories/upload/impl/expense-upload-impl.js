@@ -35,7 +35,6 @@ class ExpenseUploadImpl {
                 cb(new Error('Only Excel files are allowed!'), false);
             }
         };
-
         return multer({storage, fileFilter});
     }
 
@@ -102,6 +101,22 @@ class ExpenseUploadImpl {
             entries.push(entry);
         });
         return entries;
+    }
+
+    static async prepareExcelForEmail() {
+        const workbook = new ExcelJs.Workbook();
+        const sheet = workbook.addWorksheet('Expenses');
+
+        // Title
+        sheet.mergeCells('A1:C1');
+        const titleCell = sheet.getCell('A1');
+        titleCell.value = 'Expenses';
+        titleCell.font = {
+            size: 16,
+            bold: true
+        };
+        titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+        return workbook;
     }
 }
 
