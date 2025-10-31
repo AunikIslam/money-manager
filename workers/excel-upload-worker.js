@@ -15,27 +15,8 @@ const worker = new Worker(
     'excel-processing', // queue name
     async job => {
         const { filePath, userId } = job.data;
-        const workBook = new ExcelJs.Workbook();
-        await workBook.xlsx.readFile(filePath);
-
-        const workSheet = workBook.worksheets[0];
-        const docs = [];
-        workSheet.eachRow((row, rowNumber) => {
-            if (rowNumber === 1) return; // skip header
-            console.log(`${rowNumber + 1}. Date: ${row.getCell(5).value}`);
-            console.log(`${rowNumber + 1}. Time: ${row.getCell(6).value}`);
-            docs.push({
-                user_id: userId,
-                category: row.getCell(1).value,
-                amount: row.getCell(2).value,
-                account: row.getCell(3).value,
-                note: row.getCell(4).value,
-                date: utilFunctions.datePipe(row.getCell(5).value, 'hh:mm:ss'),
-                time: utilFunctions.datePipe(row.getCell(6).value, 'yyyy-mm-dd'),
-                transaction_type: row.getCell(7).value
-            });
-        });
-        ExpenseUploadImpl.prepareUploadData(docs);
+        const docs = await ExpenseUploadImpl.fetchData(filePath, userId)
+        const preparedEntries = ExpenseUploadImpl.prepareUploadData(docs);
         fs.unlinkSync(filePath);
         console.log(`Processed and deleted: ${filePath}`);
     },
