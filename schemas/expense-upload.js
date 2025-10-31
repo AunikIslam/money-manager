@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const expenseErrorEntrySchema = new Schema({
+const expenseUploadSchema = new Schema({
     category: {
         type: String
     },
@@ -26,17 +26,17 @@ const expenseErrorEntrySchema = new Schema({
     transactionType: {
         type: String
     },
-    error: {
+    status: {
         type: String
     }
 });
 
-expenseErrorEntrySchema.methods.setCategory = function(category) {
+expenseUploadSchema.methods.setCategory = function(category) {
     this.category = category;
     return this;
 }
 
-expenseErrorEntrySchema.methods.setAmount = function(amount) {
+expenseUploadSchema.methods.setAmount = function(amount) {
     this.amount = amount;
     return this;
 }
@@ -46,29 +46,29 @@ expenseErrorEntrySchema.methods.setAccount = function(account) {
     return this
 }
 
-expenseErrorEntrySchema.methods.setNote = function(note) {
+expenseUploadSchema.methods.setNote = function(note) {
     this.note = note;
     return this;
 }
-expenseErrorEntrySchema.methods.setDescription = function(description) {
+expenseUploadSchema.methods.setDescription = function(description) {
     this.description = description;
     return this;
 }
-expenseErrorEntrySchema.methods.setDate = function(date) {
+expenseUploadSchema.methods.setDate = function(date) {
     this.date = date;
     return this;
 }
-expenseErrorEntrySchema.methods.setTime = function(time) {
+expenseUploadSchema.methods.setTime = function(time) {
     this.time = time;
     return this;
 }
-expenseErrorEntrySchema.methods.setTransactionType = function(type) {
+expenseUploadSchema.methods.setTransactionType = function(type) {
     this.transactionType = type;
     return this;
 }
-expenseErrorEntrySchema.methods.setError = function(error) {
-    this.error = error;
+expenseUploadSchema.methods.setStatus = function(status) {
+    this.status = status;
     return this;
 }
 
-module.exports = mongoose.model('ExpenseErrorEntry', expenseErrorEntrySchema);
+module.exports = mongoose.model('ExpenseUploadSchema', expenseUploadSchema);
