@@ -41,7 +41,7 @@ expenseUploadSchema.methods.setAmount = function(amount) {
     return this;
 }
 
-expenseErrorEntrySchema.methods.setAccount = function(account) {
+expenseUploadSchema.methods.setAccount = function(account) {
     this.account = account;
     return this
 }
