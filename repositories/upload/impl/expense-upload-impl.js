@@ -18,7 +18,7 @@ class ExpenseUploadImpl {
                 cb(null, uploadDir);
             },
             filename: (req, file, cb) => {
-                const name = `${sessionContextService.getUserId()}_expense.xlsx`;
+                const name = `${Date.now()}_expense.xlsx`;
                 cb(null, name);
             }
         });
