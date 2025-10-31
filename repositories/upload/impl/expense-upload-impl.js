@@ -3,7 +3,9 @@ const rootDir = require('../../../utils/path');
 const path = require('path');
 const fs = require('fs');
 const sessionContextService = require('../../../services/session-context-service');
-const ErrorEntry = require('../../../schemas/expense-error-entry');
+const ExcelJs = require('exceljs');
+const ExpenseUpload = require('../../../schemas/expense-upload');
+const utilFunctions = require('../../../utils/util-functions')
 
 class ExpenseUploadImpl {
     static prepareMulter() {
@@ -37,32 +39,56 @@ class ExpenseUploadImpl {
         return multer({storage, fileFilter});
     }
 
+    static async fetchData(filePath, userId) {
+        const workBook = new ExcelJs.Workbook();
+        await workBook.xlsx.readFile(filePath);
+
+        const workSheet = workBook.worksheets[0];
+        const docs = [];
+        workSheet.eachRow((row, rowNumber) => {
+            if (rowNumber === 1) return; // skip header
+            docs.push({
+                user_id: userId,
+                category: row.getCell(1).value,
+                amount: row.getCell(2).value,
+                account: row.getCell(3).value,
+                note: row.getCell(4).value,
+                date: utilFunctions.datePipe(row.getCell(5).value, 'yyyy-mm-dd'),
+                time: utilFunctions.datePipe(row.getCell(6).value, 'hh:mm:ss'),
+                transaction_type: row.getCell(7).value
+            });
+        });
+        return docs;
+    }
+
     static prepareUploadData(data) {
-        const validEntries = [];
-        const invalidEntries = [];
+        const entries = [];
 
         data.forEach(pData => {
-            let error = null;
+            let status = null;
             if (!pData.category) {
-                error = 'Category not available'
+                status = 'Category not available'
             }
             else if (!pData.amount) {
-                error = 'Amount not available'
+                status = 'Amount not available'
             }
             else if (!pData.account) {
-                error = 'Account not available'
+                status = 'Account not available'
             }
             else if (!pData.date) {
-                error = 'Date not available'
+                status = 'Date not available'
             }
             else if (!pData.time) {
-                error = 'Time not available'
+                status = 'Time not available'
             }
             else if (!pData.transaction_type) {
-                error = 'Transaction type not available'
+                status = 'Transaction type not available'
             }
-            const errorEntry =
-                new ErrorEntry()
+            else {
+                status = 'Success'
+            }
+            const entry =
+                new ExpenseUpload()
                     .setCategory(data.category)
                     .setAmount(data.amount)
                     .setAccount(data.account)
@@ -71,11 +97,11 @@ class ExpenseUploadImpl {
                     .setDate(data.date)
                     .setTime(data.time)
                     .setTransactionType(data.transaction_type)
-                    .setError(error)
+                    .setStatus(status)
 
-            invalidEntries.push(errorEntry);
+            entries.push(entry);
         });
-        console.log(invalidEntries);
+        return entries;
     }
 }
 
