@@ -11,8 +11,6 @@ const app = require("../../../app");
 class AttachmentEmailImpl {
 
     static createTransporter() {
-        console.log(process.env.MAIL_HOST);
-        console.log(process.env.MAIL_PORT);
         return nodeMailer.createTransport(
             {
                 address: 'smtp.gmail.com',
@@ -29,33 +27,28 @@ class AttachmentEmailImpl {
 
     static async sendAttachmentsEmail(workBook, userId) {
         const transporter = this.createTransporter();
-        mongoose.connect(environmentConfig.mongodbURI)
-            .then(async (client) => {
-                const email = await User.findById(userId, 'email');
-                const dirPath = path.join(rootDir, 'email-attachments', 'expenses');
-                if (!fs.existsSync(dirPath)) {
-                    // recursive will create an uploads directory if it does not exist
-                    fs.mkdirSync(dirPath, {recursive: true});
-                }
-                const filePath = path.join(dirPath, `${userId}_expense.xlsx`);
+        const email = await User.findById(userId, 'email');
+        const dirPath = path.join(rootDir, 'email-attachments', 'expenses');
+        if (!fs.existsSync(dirPath)) {
+            // recursive will create an uploads directory if it does not exist
+            fs.mkdirSync(dirPath, {recursive: true});
+        }
+        const filePath = path.join(dirPath, `${userId}_expense.xlsx`);
 
-                await workBook.xlsx.writeFile(filePath);
+        await workBook.xlsx.writeFile(filePath);
 
-                try {
-                    console.log(email.email);
-                    await transporter.sendMail({
-                        from: process.env.SENDER_MAIL,
-                        to: email.email,
-                        subject: 'Your expense upload summary',
-                        attachments: [{filename: `${userId}_expenses.xlsx`, path: filePath}]
-                    });
-                    fs.unlinkSync(filePath);
-                } catch (error) {
-                    console.log(error.message);
-                }
-            })
-
-
+        try {
+            console.log(email.email);
+            await transporter.sendMail({
+                from: process.env.SENDER_MAIL,
+                to: email.email,
+                subject: 'Your expense upload summary',
+                attachments: [{filename: `${userId}_expenses.xlsx`, path: filePath}]
+            });
+            fs.unlinkSync(filePath);
+        } catch (error) {
+            console.log(error.message);
+        }
     }
 }
 
