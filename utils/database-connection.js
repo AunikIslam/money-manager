@@ -1,15 +1,18 @@
-const Sequelize = require('sequelize');
+const mongoose = require('mongoose');
 const environmentConfig = require('../config/environment-config');
 
-const sequelize = new Sequelize(
-    environmentConfig.dbName,
-    environmentConfig.dbUser,
-    environmentConfig.dbPassword,
-    {
-        host: environmentConfig.dbHost,
-        dialect: 'postgres',
-        port: environmentConfig.dbPort,
-    }
-);
+let isConnected = false;
 
-module.exports = sequelize;
+exports.connectDB = async () => {
+    if (isConnected) {
+        return;
+    }
+    try {
+        await mongoose.connect(environmentConfig.mongodbURI);
+        isConnected = true;
+        console.log(`Server listening on port ${environmentConfig.port}. Environment is ${environmentConfig.nodeEnv}`);
+    } catch (error) {
+        console.log(error);
+    }
+}
+
