@@ -115,3 +115,11 @@ exports.generateOtp = (length = 6) => {
     }
     return otp;
 }
+
+exports.prepareColumnWidth = (worksheet, key) => {
+    let columnWidth = 0
+    worksheet.getColumn(key).values.forEach(pValue => {
+        columnWidth = Math.max(columnWidth, pValue.length);
+    });
+    return columnWidth + 5;
+}

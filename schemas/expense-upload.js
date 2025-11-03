@@ -6,7 +6,7 @@ const expenseUploadSchema = new Schema({
         type: String
     },
     amount: {
-        type: Number
+        type: String
     },
     account: {
         type: String
@@ -37,7 +37,9 @@ expenseUploadSchema.methods.setCategory = function(category) {
 }
 
 expenseUploadSchema.methods.setAmount = function(amount) {
-    this.amount = amount;
+    if (amount) {
+        this.amount = amount.toString();
+    }
     return this;
 }
 

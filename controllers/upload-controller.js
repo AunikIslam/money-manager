@@ -8,6 +8,7 @@ exports.uploadExpenseExcel = async function(req, res) {
         return res.status(400).send(new ApiResponse.Error(['Select a file'], 400));
     }
     try {
+        console.log(`Request received`)
         await ExcelQueue.excelQueue.add(
             'parse-expense', // add job 'parse-expense' to the queue
             {
@@ -18,6 +19,7 @@ exports.uploadExpenseExcel = async function(req, res) {
         return res.status(200).send(new ApiResponse.Success(`File uploaded successfully.`));
 
     } catch (error) {
+        console.log(`Error from upload controller ${error.message}`);
         return res.status(400).send(new ApiResponse.Error(['Something went wrong'], 400));
     }
 }

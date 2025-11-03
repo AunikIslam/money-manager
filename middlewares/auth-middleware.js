@@ -14,6 +14,7 @@ exports.verifyToken = (req, res, next) => {
     try {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET_KEY);
         const decoded = jwt.decode(token);
+        console.log(`Auth Middleware id: ${ decoded.id }`);
         SessionContextService.setUserId(decoded.id);
         next();
     } catch (error) {

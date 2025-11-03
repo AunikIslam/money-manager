@@ -26,19 +26,19 @@ class AttachmentEmailImpl {
     }
 
     static async sendAttachmentsEmail(workBook, userId) {
-        const transporter = this.createTransporter();
-        const email = await User.findById(userId, 'email');
-        const dirPath = path.join(rootDir, 'email-attachments', 'expenses');
-        if (!fs.existsSync(dirPath)) {
-            // recursive will create an uploads directory if it does not exist
-            fs.mkdirSync(dirPath, {recursive: true});
-        }
-        const filePath = path.join(dirPath, `${userId}_expense.xlsx`);
-
-        await workBook.xlsx.writeFile(filePath);
-
         try {
-            console.log(email.email);
+            const transporter = this.createTransporter();
+            const email = await User.findById(userId, 'email');
+            const dirPath = path.join(process.cwd(), 'email-attachments', 'expenses');
+
+            if (!fs.existsSync(dirPath)) {
+                // recursive will create an uploads directory if it does not exist
+                fs.mkdirSync(dirPath, {recursive: true});
+            }
+            const filePath = path.join(dirPath, `${userId}_expense.xlsx`);
+
+            await workBook.xlsx.writeFile(filePath);
+
             await transporter.sendMail({
                 from: process.env.SENDER_MAIL,
                 to: email.email,
@@ -46,8 +46,9 @@ class AttachmentEmailImpl {
                 attachments: [{filename: `${userId}_expenses.xlsx`, path: filePath}]
             });
             fs.unlinkSync(filePath);
+
         } catch (error) {
-            console.log(error.message);
+            throw error;
         }
     }
 }

@@ -45,14 +45,14 @@ class ExpenseUploadImpl {
         const workSheet = workBook.worksheets[0];
         const docs = [];
         workSheet.eachRow((row, rowNumber) => {
-            if (rowNumber === 1) return; // skip header
+            if (rowNumber === 1) return;
             docs.push({
                 user_id: userId,
                 category: row.getCell(1).value,
                 amount: row.getCell(2).value,
                 account: row.getCell(3).value,
                 note: row.getCell(4).value,
-                date: utilFunctions.datePipe(row.getCell(5).value, 'yyyy-mm-dd'),
+                date: utilFunctions.datePipe(row.getCell(5).value, 'yyyy-MM-dd'),
                 time: utilFunctions.datePipe(row.getCell(6).value, 'hh:mm:ss'),
                 transaction_type: row.getCell(7).value
             });
@@ -88,14 +88,14 @@ class ExpenseUploadImpl {
             }
             const entry =
                 new ExpenseUpload()
-                    .setCategory(data.category)
-                    .setAmount(data.amount)
-                    .setAccount(data.account)
-                    .setNote(data.note)
-                    .setDescription(data.description)
-                    .setDate(data.date)
-                    .setTime(data.time)
-                    .setTransactionType(data.transaction_type)
+                    .setCategory(pData.category)
+                    .setAmount(pData.amount)
+                    .setAccount(pData.account)
+                    .setNote(pData.note)
+                    .setDescription(pData.description)
+                    .setDate(pData.date)
+                    .setTime(pData.time)
+                    .setTransactionType(pData.transaction_type)
                     .setStatus(status)
 
             entries.push(entry);
@@ -103,19 +103,90 @@ class ExpenseUploadImpl {
         return entries;
     }
 
-    static async prepareExcelForEmail() {
+    static async prepareExcelForEmail(data) {
+        console.log(data)
         const workbook = new ExcelJs.Workbook();
-        const sheet = workbook.addWorksheet('Expenses');
+        const worksheet = workbook.addWorksheet('Expenses');
 
         // Title
-        sheet.mergeCells('A1:C1');
-        const titleCell = sheet.getCell('A1');
+        worksheet.mergeCells('A1:C2');
+        const titleCell = worksheet.getCell('A1');
         titleCell.value = 'Expenses';
         titleCell.font = {
-            size: 16,
+            size: 20,
             bold: true
         };
         titleCell.alignment = { vertical: 'middle', horizontal: 'center' };
+
+        // Header row
+        worksheet.columns = [
+            {
+                key: 'category'
+            },
+            {
+                key: 'amount'
+            },
+            {
+                key: 'account'
+            },
+            {
+                key: 'note'
+            },
+            {
+                key: 'date'
+            },
+            {
+                key: 'time'
+            },
+            {
+                key: 'transactionType'
+            },
+            {
+                key: 'status'
+            }
+        ]
+
+        const headerRow = worksheet.getRow(3);
+        headerRow.values = ['Category', 'Amount', 'Account', 'Note', 'Date', 'Time', 'Transaction Type', 'Status'];
+
+        headerRow.font = { bold: true, size: 16, color: { argb: '00000000' } };
+        headerRow.fill = {
+            type: 'pattern',
+            pattern: 'solid',
+            fgColor: { argb: 'FF99CCFF' },
+        };
+        headerRow.alignment = { horizontal: 'center' };
+
+        const dataRowStartNumber = 4;
+        for (let i = 0; i < data.length; i++) {
+            const row = worksheet.getRow(dataRowStartNumber + i);
+            row.font = { bold: false, size: 16, color: { argb: 'FF000000' } };
+            row.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: i % 2 === 0 ? 'FFC0C0C0' : 'FFFFFFFF' },
+            };
+            row.alignment = {
+                horizontal: 'center',
+            }
+            row.values = {
+                category: data[i].category,
+                amount: data[i].amount,
+                account: data[i].account,
+                note: data[i].note,
+                date: data[i].date,
+                time: data[i].time,
+                transactionType: data[i].transactionType,
+                status: data[i].status
+            }
+            worksheet.addRow(row)
+        }
+
+
+        worksheet.columns.forEach(column => {
+            worksheet.getColumn(column.key).width = utilFunctions.prepareColumnWidth(worksheet, column.key);
+        });
+
         return workbook;
     }
 }
