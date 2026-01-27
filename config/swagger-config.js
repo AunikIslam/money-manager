@@ -11,13 +11,12 @@ const options = {
         },
         servers: [
             {
-                url: '{host_url}',
-                description: 'The production API server',
-                variables: {
-                    host_url: {
-                        default: 'http://localhost:3000'
-                    }
-                }
+                url: 'https://money-manager-haqty1bke-aunikislams-projects.vercel.app',
+                description: 'Production server',
+            },
+            {
+                url: 'http://localhost:3000',
+                description: 'Development server',
             }
         ],
         components: {
@@ -40,5 +39,12 @@ const options = {
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
-    app.use('/swagger-ui/index.html', swaggerUi.serve, swaggerUi.setup(specs));
+    const swaggerOptions = {
+        customCssUrl: 'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui.min.css',
+        customJs: [
+            'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-bundle.js',
+            'https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.15.5/swagger-ui-standalone-preset.js',
+        ],
+    };
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs, swaggerOptions));
 };

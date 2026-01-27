@@ -18,6 +18,9 @@ const expenseRoutes = require('./routes/expense-routes');
 const uploadRoutes = require('./routes/upload-routes');
 
 app.use(express.json());
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok' });
+});
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use((req, res, next) => {

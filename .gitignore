@@ -10,3 +10,4 @@ package-lock.json
 # IDE files
 .idea
 .vercel
+.env*.local

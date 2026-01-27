@@ -9,7 +9,7 @@ const utilFunctions = require('../../../utils/util-functions')
 
 class ExpenseUploadImpl {
     static prepareMulter() {
-        const uploadDir = path.join(rootDir, 'uploads', 'expenses');
+        const uploadDir = path.join('/tmp', 'uploads', 'expenses');
         if (!fs.existsSync(uploadDir)) {
             // recursive will create an uploads directory if it does not exist
             fs.mkdirSync(uploadDir, {recursive: true});
